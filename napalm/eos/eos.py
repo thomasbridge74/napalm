@@ -139,9 +139,13 @@ class EOSDriver(NetworkDriver):
         self.transport = transport
         if transport == "ssh":
             self.transport_class = "ssh"
+            init_args = ['port']
         else:
             try:
                 self.transport_class = pyeapi.client.TRANSPORTS[transport]
+                # ([1:]) to omit self
+                init_args = inspect.getfullargspec(self.transport_class.__init__)[0][1:]
+                
             except KeyError:
                 raise ConnectionException(
                     "Unknown transport: {}".format(self.transport)
@@ -150,7 +154,7 @@ class EOSDriver(NetworkDriver):
         init_args = inspect.getfullargspec(self.transport_class.__init__)[0]
 
         init_args.pop(0)  # Remove "self"
-
+        
         if transport == "ssh":
             self.netmiko_optional_args = {
                 k: v
