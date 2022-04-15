@@ -151,9 +151,6 @@ class EOSDriver(NetworkDriver):
                     "Unknown transport: {}".format(self.transport)
                 )
         filter_args = ["host", "username", "password", "timeout", "lock_disable"]
-        init_args = inspect.getfullargspec(self.transport_class.__init__)[0]
-
-        init_args.pop(0)  # Remove "self"
         
         if transport == "ssh":
             self.netmiko_optional_args = {
