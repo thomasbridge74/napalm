@@ -896,7 +896,7 @@ class EOSDriver(NetworkDriver):
 
         for command in commands:
             try:
-                cli_output[str(command)] = self.device.run_commands(
+                cli_output[str(command)] = self._run_commands(
                     [command], encoding="text"
                 )[0].get("output")
                 # not quite fair to not exploit rum_commands
